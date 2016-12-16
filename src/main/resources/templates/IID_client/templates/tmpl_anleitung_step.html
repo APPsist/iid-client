@@ -1,0 +1,157 @@
+<div class="proc_header">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{{mult100 progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{mult100 progress}}%;">
+        <span>{{mult100 progress}}%</span>
+    </div>
+</div>
+<div class="proc_content">
+    <div class="step_desc">
+
+        <p class="step" id="assistance_title">Aktueller Schritt</p>
+        <p class="todo_active ">{{{title.current}}}</p>
+
+    </div>
+    {{#if (showContent content)}}
+    <div class="assi_text">
+        <div class="text_field">
+            <p>{{{info}}}</p>
+        </div>
+
+        {{#compare content.type "package"}}
+        {{else}}
+        <div class="text_endorsement">
+            {{#if endorsement}}
+            {{{endorsement}}}
+            {{else}}
+            <p>Wenn Sie den Schritt &bdquo;{{{title.current}}}&ldquo; ausgef&uuml;hrt haben, dr&uuml;cken Sie bitte das Feld &bdquo;Best&auml;tigen &ndash; Weiter&ldquo;.</p>
+            {{/if}}    
+
+            {{#each warnings}}
+            <p>{{{message}}}</p>
+            {{/each}}
+            <div class="warnings">
+                {{#each warnings}}
+                <span style="width:{{math 100 "/" ../warnings.length}}%">
+                    <img src="{{icon}}">
+                </span>
+                {{/each}}
+            </div>
+        </div>
+        {{/compare}}
+
+
+        {{#if navigation.contacts}}
+        <button id="assi_contacts" class="btn btn-appsist_quad" type="submit"><span class="icon icon-contact"></span></button>
+        {{/if}}
+        {{#if navigation.notes}}
+        <button id="assi_notes" class="btn btn-appsist_quad" type="submit"><span class="icon icon-notes"></span></button>
+        {{/if}}
+        {{#if navigation.knowledge}}
+        <button id="assi_knowledge" class="btn btn-appsist_quad" type="submit"><span class="icon icon-knowledge"></span></button>
+        {{/if}}
+    </div>
+
+
+    {{else}}
+    <div class="proc_content_textonly_icons">
+        <div class="text_only">
+            <p>{{{info}}}</p>
+            {{#compare content.type "package"}}
+            {{else}}
+            {{#if endorsement}}
+            {{{endorsement}}}
+            {{else}}
+            <p></p>
+            {{/if}}
+            {{/compare}}
+
+            {{#each warnings}}
+            <p>{{{message}}}</p>
+            {{/each}}
+            <div class="warnings">
+                {{#each warnings}}
+                <span style="width:{{math 100 "/" ../warnings.length}}%">
+                    <img src="{{icon}}">
+                </span>
+                {{/each}}
+            </div>
+        </div>
+        <div class="icon_row">
+            {{#if navigation.contacts}}
+            <button id="assi_contacts" class="btn btn-appsist_quad" type="submit"><span class="icon icon-contact"></span></button>
+            {{/if}}
+            {{#if navigation.notes}}
+            <button id="assi_notes" class="btn btn-appsist_quad" type="submit"><span class="icon icon-notes"></span></button>
+            {{/if}}
+            {{#if navigation.knowledge}}
+            <button id="assi_knowledge" class="btn btn-appsist_quad" type="submit"><span class="icon icon-knowledge"></span></button>
+            {{/if}}
+        </div>
+    </div>
+    {{/if}}
+
+
+
+    {{#if (showContent content)}}
+
+    <div class="content_right">
+        {{!-- {{#compare content.type "package"}}--}}
+        {{#if content.main}}
+        {{#compare content.mimeType "includes" "image"}}
+        <img src="{{content.main}}" />
+        {{/compare}}
+
+        {{#compare content.mimeType "includes" "video"}}
+        <video controls>
+            <source src="{{content.main}}" type="{{content.mimeType}}">
+            Your browser does not support HTML5 video.
+        </video>
+        {{/compare}}
+
+        {{#compare content.mimeType "text/html"}}
+        <div style="position: absolute; top: 0px; bottom: 0px; left:0px; right: 0px;">
+            <iframe class="embed_content" src="{{content.main}}"></iframe>
+        </div>
+        {{/compare}}
+
+        {{#compare content.mimeType "text/html+snippet"}}
+        {{{getVideoHTML content.main}}}
+      <!-- getVideoButton content.main-->
+        {{/compare}}
+        {{/if}}
+
+        {{#compare content.type "html"}}
+        {{{content.body}}}
+        {{/compare}}
+
+        {{#compare content.type "frame"}}
+        <div style="position: absolute; top: 0px; bottom: 0px; left:0px; right: 0px;">
+            <iframe style="display: block; width:100%; height:100%; border:none;" src="{{content.src}}"></iframe>
+        </div>
+        {{/compare}}
+    </div>
+
+    {{/if}}
+
+</div>
+<div class="proc_footer">
+    <div class="third">
+        {{#if navigation.close}}
+        <button id="assi_close" class="btn btn-appsist_quad" type="submit"><span class="icon icon-abort"></span></button>
+        {{/if}}
+        {{#if navigation.back}}
+        <button id="assi_back" class="btn btn-appsist_quad" type="submit"><span class="icon icon-arrow-back gly-flip-horizontal"></span></button>
+        {{/if}}
+
+        {{#if arid}}
+       <button id="assi_gotoAR" class="btn btn-appsist_quad" type="submit" onclick="IID.showARscene( {{arid}}');"><span class="glyphicon glyphicon-eye-open"></span></button>
+        {{/if}}  
+        <!--<button id="assi_gotoAR" class="btn btn-appsist_quad" type="submit" onclick="IID.showARscene('festo_100');"><span class="glyphicon glyphicon-eye-open"></span></button>-->
+
+    </div>
+
+    <div class="third2x" style="float: left;">
+        {{#each navigation.buttons}}
+        <button id="nav_button-{{id}}" class="btn btn-appsist_proc_text" type="submit" style="width:{{math 100 "/" ../navigation.buttons.length}}%; float: left;">{{text}}</button>
+        {{/each}}
+    </div>
+</div>

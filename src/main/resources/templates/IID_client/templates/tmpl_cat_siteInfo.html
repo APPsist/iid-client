@@ -1,0 +1,29 @@
+﻿<div class="anlagen_container">
+    <table>
+        {{#each items}}
+        <tr id="station-ID-{{id}}">
+            <td class="col_icon">
+                {{#compare state "warning"}}
+                <span class="icon-big icon-flash appsist_error" aria-hidden="true"></span>
+                {{/compare}}
+
+                {{#compare state "attention"}}
+                <span class="icon-big icon-flash appsist_warn" aria-hidden="true"></span>
+                {{/compare}}
+
+                {{#compare state "running"}}
+                <span class="icon-big icon-play" aria-hidden="true"></span>
+                {{/compare}}
+
+                {{#compare state "standby"}}
+                <span class="icon-big icon-stop" aria-hidden="true"></span>
+                {{/compare}}
+            </td>
+            <td class="col_loc_1">{{site}}</td>
+            <td class="col_loc_2">{{station}}</td>
+            <td class="col_description">{{message}}</td>
+        </tr>
+        {{/each}}
+        </table>
+</div>
+

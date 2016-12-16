@@ -1,0 +1,29 @@
+﻿{{#compare level "info"}}
+<li class="info" id="{{id}}">
+    <span class="icon icon-info" aria-hidden="true"></span>
+    <div>
+        <p class="size_50">Achtung - {{getTime created}} Uhr</p>
+        <p class="size_100_m">{{message}}</p>
+    </div>
+</li>
+{{/compare}}
+
+{{#compare level "warning"}}
+<li class="warning" id="{{id}}">
+    <span class="icon icon-attention" aria-hidden="true"></span>
+    <div>
+        <p class="size_50">Warnung - {{getTime created}} Uhr</p>
+        <p class="size_100_m">{{message}}</p>
+    </div>
+</li>
+{{/compare}}
+
+{{#compare level "error"}}
+<li class="error" id="{{id}}">
+    <span class="icon icon-flash" aria-hidden="true"></span>
+    <div>
+        <p class="size_50">Fehler - {{getTime created}} Uhr</p>
+        <p class="size_100_m">{{message}}</p>
+    </div>
+</li>
+{{/compare}}

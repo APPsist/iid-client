@@ -1,0 +1,58 @@
+<div id="instructions_cat" class="liquid">
+	<span class="previous icon icon-left"></span>
+	<div class="wrapper">
+		<ul>
+		{{#each items}}
+			<li>
+				<div class="content_box mouse_pointer" id="instruction-{{id}}" onclick="IID.setAssistance('{{title}}');">
+
+						<h1>{{title}}</h1>
+						<div class="img_container">
+							<img src="{{imageUrl}}" alt="">
+						</div>
+						<div class="content_footer">
+							<table>
+								{{#if skillLevel}}
+								<tr>
+									<td><span class="icon icon-level_of_difficulty" aria-hidden="true"></span></td>
+									<td>Schwierigkeitsgrad</td>
+									<td class="bold">{{skillLevel}}</td>
+								</tr>
+								{{/if}}
+								{{#if numExecutions}}
+								<tr>
+									<td><span class="icon icon-iterations" aria-hidden="true"></span></td>
+									<td>Wiederholungen</td>
+									<td class="bold">{{numExecutions}}x</td>
+								</tr>
+								{{/if}}
+								{{#if estExecutionTime}}
+								<tr>
+									<td><span class="icon icon-duration" aria-hidden="true"></span></td>
+									<td>Dauer</td>
+									<td class="bold">{{estExecutionTime}} min</td>
+								</tr>
+								{{/if}}
+								{{#if site}}							
+								<tr>
+								<td><span class="icon icon-marker" aria-hidden="true"></span></td>
+									<td>Anlage</td>
+									<td class="bold">{{site}}</td>
+								</tr>
+								{{/if}}
+								{{#if station}}
+								<tr>
+									<td><span class="icon icon-marker" aria-hidden="true"></span></td>
+									<td>Station</td>
+									<td class="bold">{{station}}</td>
+								</tr>
+								{{/if}}
+							</table>
+						</div>
+				</div>
+			</li>
+		{{/each}}	
+		</ul>
+	</div>
+	<span class="next icon icon-right"></span>
+</div>

@@ -1,0 +1,50 @@
+<div>&nbsp;</div>
+<div id="wissen_cat" class="liquid">
+	<span class="previous icon icon-left"></span>
+	<div class="wrapper">
+		<ul>
+		{{#each items}}
+			<li id="learningObjects-{{id}}">
+				<div class="content_box mouse_pointer">
+					<h1>{{title}}</h1>
+					<div class="img_container">
+						<img src="{{imageUrl}}" alt="">
+					</div>
+					<div class="progress_footer">
+						<div class="icon-container text-right">
+							{{#if hasImages }}
+							<span class="icon icon-image"></span>
+							{{/if}}
+							{{#if hasVideo }}
+							<span class="icon icon-movie"></span>
+							{{/if}}
+							{{#if hasAudio }}
+							<span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
+							{{/if}}
+							{{#if has3D }}
+							<span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
+							{{/if}}	
+							<p>
+							{{#if external }}
+							<span class="icon icon-external" style="width:13px;height:13px;"> </span> Inhalt öffnet in neuem Fenster
+							{{/if}}
+							&nbsp;
+							</p>
+							</div>
+						</div>
+
+						<!--div class="progress">
+							<!- Wertanzeige über style=width in % ->
+ 							<div class="progress-bar" role="progressbar" aria-valuenow="{{mult100 progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{mult100 progress}}%;">
+ 								<span class="sr-only">{{mult100 progress}}% abgeschlossen</span>
+ 							</div>
+ 						</div>
+ 						<p>{{mult100 progress}}% der Lektionen bearbeitet</p>						
+					</div>          
+					</div-->       
+			</li>
+		{{/each}}	
+		</ul>
+	</div>
+	<span class="next icon icon-right"></span>
+</div>

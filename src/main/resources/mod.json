@@ -1,0 +1,12 @@
+{
+	"main" : "de.appsist.service.iid.client.MainVerticle",
+
+	"description" : "Tablet client for the APPsist platform.",
+	"licenses" : ["The Apache Software License Version 2.0"],
+	"author" : "Frank Sulzmann",
+
+	"keywords": ["appsist", "iid", "client"],
+	"homepage": "http://www.appsist.de/",
+
+	"auto-redeploy": true
+}

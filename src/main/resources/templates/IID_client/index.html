@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Appsist Client</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link rel="stylesheet" href="./css/appsist.css">
+
+    <script type="text/javascript" src="./js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./carousel_liquid/jquery.liquidcarousel.pack.js"></script>
+    <script type="text/javascript" src="./js/handlebars-v4.0.2.js"></script>
+    <script type="text/javascript" src="./js/handlebars_helpers.js"></script>
+    <script type="text/javascript" src="./js/sockjs-0.3.4.min.js"></script>
+    <script type="text/javascript" src="./js/vertxbus-2.1.js"></script>
+    <script type="text/javascript" src="./js/sha256.js"></script>
+    <script type="text/javascript" src="./js/IID_client.js"></script>
+    <script type="text/javascript" src="./js/client.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Anzeige aktiver Buttons in Navi-Zeile
+            $('#main_nav li').click(function () {
+                $("#main_nav li.active").removeClass("active");
+                $(this).addClass("active");
+            });
+
+            // IID-Client
+            IID.init();
+            //disable back button in browser
+            history.pushState(null, null, 'index.html');
+            window.addEventListener('popstate', function (event) {
+                history.pushState(null, null, 'index.html');
+            });
+
+            // lernzeit aus als Standard aktivieren
+            $('#lernzeit_aus').addClass("active");
+        });
+    </script>
+</head>
+
+<body>
+    <!-- ######################################################## Start Login ##################################################################### -->
+    <div id="login_container" class="page active">
+        <div class="login_box">
+            <div class="appsist_logo text-center">
+                <img src="img/logo_appsist.svg" width="100" height="100" />
+            </div>
+
+            <form name="login-form" id="login-form">
+                <div class="form-group">
+                    <label for="userId">Benutzername</label>
+                    <input type="text" class="form-control appsist" name="userId" placeholder="Benutzernamen eingeben" value="fritz.tonker@festo.de" required>
+                    <!--<input type="text" class="form-control appsist" name="userId" placeholder="Benutzernamen eingeben" value="lena.paulus@lps.de" required>-->
+                    <!--<input type="text" class="form-control appsist" name="userId" placeholder="Benutzernamen eingeben" value="" required>-->
+                </div>
+                <div class="form-group">
+                    <label for="password">Passwort</label>
+                    <input type="password" class="form-control appsist" name="password" placeholder="Passwort eingeben" value="demo" required>
+                    <!--<input type="password" class="form-control appsist" name="password" placeholder="Passwort eingeben" value="" required>-->
+                </div>
+                <input type="button" onclick="IID.login();" value="Einloggen" class="btn btn-appsist">
+            </form>
+            <p class="text_100 text-center alert-danger" id="login_error">Benutzername oder Passwort ist ungültig!</p>
+            <!--<p class="text_100 text-center sepa-line">oder</p>
+            <p class="text_100 text-center">Mitarbeiterkarte einlegen, um sich anzumelden</p>-->
+        </div>
+    </div>
+    <!-- ########################################################  Ende Login ##################################################################### -->
+    <!-- ########################################################  Start Safety ################################################################### -->
+    <div class="page safety" id="page_safety">
+        <div class="login_box">
+            <p>Ich bestätige, dass ich mich bei der Nutzung der Assistenz an die in der Sicherheitsunterweisung vermittelten Vorgaben und Anweisungen halte.</p>
+            <p><a href="#" class="appsist-popup" data-toggle="modal" style="color:red" data-target="#alert_pop_popup_PDF">Unterweisung Arbeitssicherheit</a>
+            <p>
+                <em>
+                    Dieses Dokument ersetzt nicht die jährliche Schulung!<br />
+                    Es kann wahlweise aufgerufen werden.
+                </em>
+            </p>
+            <input type="button" onclick="IID.selectPage('page_anleitungen');" value="Bestätigen und weiter" class="btn btn-appsist">
+        </div>
+    </div>
+    <!-- ########################################################  Ende Safety ################################################################### -->
+    <!-- ######################################################### Start Safety Popup  #################################################################### -->
+    <div id="alert_pop_popup_PDF" class="modal fade" role="dialog">
+
+        <div class="appsist-popup">
+            <button class="btn btn-appsist_quad_right" onclick="$('#alert_pop_popup_PDF').modal('hide');">
+                <span class="icon icon-abort" aria-hidden="true"></span>
+            </button>
+            <div class="popup-title_info">
+                <h1>Unterweisung Arbeitssicherheit </h1>
+
+            </div>
+            <div class="popup-content">
+                <div class='embed-responsive' style='padding-bottom:50%'>
+                    <object data='./data/Unterweisung_Arbeitssicherheit_06_11_2015.pdf' type='application/pdf' width='100%' height='100%'></object>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ######################################################### Ende Safety Popup  #################################################################### -->
+    <!-- ######################################################### Start PDF Popup  #################################################################### -->
+    <div id="alert_wissen_PDF" class="modal fade" role="dialog">
+
+        <div class="appsist-popup">
+            <button class="btn btn-appsist_quad_right" onclick="$('#alert_wissen_PDF').modal('hide');">
+                <span class="icon icon-abort" aria-hidden="true"></span>
+            </button>
+            <div class="popup-title_info">
+                <h1 id="wissen_titel">TITEL WISSEN</h1>
+            </div>
+            <div class="popup-content">
+                <div class='embed-responsive' style='padding-bottom:50%' id="pdf_container">
+                    <object data='' type='application/pdf' width='100%' height='100%'></object>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ######################################################### Ende PDF Popup  #################################################################### -->
+    <!-- ######################################################## Start Navigation ############################################################## -->
+    <div id="navigation_menu">
+        <nav class="navbar navbar-default">
+            <ul class="nav navbar-nav" id="main_nav">
+                <li id="main_menu_anleitungen" onclick="IID.selectPage('page_anleitungen');" class="active"> <span class="icon_header icon-instruction " aria-hidden="true"></span> <br />Assistenz</li>
+                <li onclick="IID.selectPage('page_wissen');"> <span class="icon_header icon-knowledge-bulb" aria-hidden="true"></span><br />Vertiefung</li>
+                <li onclick="IID.selectPage('page_contact');">  <span class="icon_header icon-contact" aria-hidden="true"></span><br />Experten</li>
+                <li onclick="IID.selectPage('page_siteOverview');"><span class="icon_header icon-status" aria-hidden="true"></span><br />Betriebsdaten</li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="lernzeit_button">
+                    <div class="btn-group appsist_toggle" data-toggle="buttons">
+                        <label class="btn btn-primary" id="lernzeit_aus" onclick="IID.setUserActivity('main')">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked >An
+                        </label>
+                        <label class="btn btn-primary" id="lernzeit_an" onclick="IID.setUserActivity('side')">
+                            <input type="radio" name="options" id="option2" autocomplete="off" >Aus
+                        </label>
+                    </div>
+                    <div class="lernzeit_text">
+                        Lernzeit
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <div data-toggle="dropdown">
+                            <div class="left">
+                                <span aria-hidden="true" class="icon_header icon-marker ">
+                                </span><br />
+                                Standorte
+                            </div>
+                            <div id="current_location" class="status_text left"><!--Anlage 1:<br /> Station 20--></div>
+                        </div>
+                        <div class="dropdown-menu  frame_less" style="top:40px;">
+                            <ul id="liste_orte" class="meldungen">
+                                <li>Keine Orte abgerufen</li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="alarm" style="height: 87px;">
+                    <div class="dropdown">
+                        <div data-toggle="dropdown">
+                            <span id="show_meldungen" aria-hidden="true" class="icon_header icon-bell"></span>
+                            <span class="number" id="notification_no">-</span><br>
+                            <span style="position:absolute; top:25px; left:-20px; margin-bottom:10px;">Achtung</span>
+                        </div>
+                        <div class="dropdown-menu frame_less">
+                            <ul class="meldungen" id="meldungen_liste"></ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <div data-toggle="dropdown">
+                            <span class="icon_header icon-user" aria-hidden="true">
+                            </span><br />
+                            Profil
+                        </div>
+
+                        <div class="dropdown-menu">
+
+                            <ul>
+                                <li>
+                                    <div class="symbol_container"><span class="icon-big icon-log-out" aria-hidden="true"></span></div>
+                                    <span id="display_username">Keinen Benutzernamen empfangen</span>
+                                </li>
+
+                                <li><a href="#" class="logoff" data-toggle="modal" data-target="#alert_log_off">Abmelden</a></li>
+
+                                <li role="separator" class="divider"></li>       
+                                <li onclick="IID.performAction({type: 'post', body: {}, address: window.location.origin + '/services/auth/showProfile'});">
+                                    <p>Profil bearbeiten</p>
+                                </li>      
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- ########################################################  Ende Navigation ################################################################ -->
+    <!-- ########################################################  Start Popups ################################################################### -->
+    <!-- Popup Abmeldung -->
+    <div id="alert_log_off" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Abmeldung</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Wollen Sie sich abmelden?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-appsist" data-dismiss="modal" style="width:49%; float:left;">Zurück</button>
+                    <button type="button" class="btn btn-appsist" data-dismiss="modal" onclick="IID.logout()" style="width:49%; float:right;">Abmelden</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- APPSIST-Popup -->
+    <div id="alert_appsist_popup" class="modal fade" role="dialog">
+        <div class="appsist-popup">
+            <div class="popup-title_info"><h1>No data for Popup</h1></div>
+            <div class="popup-content">
+                No data for Popup
+            </div>
+            <div class="popup-footer" style="text-align: right;">
+                <button class="btn btn-appsist_quad_right" onclick="$('#alert_appsist_popup').modal('hide');">
+                    <span class="icon icon-abort" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ########################################################  Ende Popups #################################################################### -->
+    <!-- ########################################################  Start Katalalog Anleitungen #################################################### -->
+    <div class="page" id="page_anleitungen">
+        <!--<div class="appsist_breadcrumb">
+            <a href="#">Alle</a>
+            <a href="#">Anlage 1</a>
+            <a href="#">Station 20</a>
+        </div>-->
+
+        <div id="content_anleitungen" class="content">
+            <h1>Anleitungen</h1>
+            <p class="alert-danger">Keine Katalog-Daten empfangen</p>
+        </div>
+    </div>
+    <!-- ########################################################  Ende Katalalog Anleitungen #################################################### -->
+    <!-- ########################################################  Start Katalalog Wissen ######################################################## -->
+    <div class="page" id="page_wissen">
+
+        <!--<div class="search_container">
+            <div class="input-group">
+                <input type="text" class="form-control appsist" placeholder="Suche nach...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search gly-flip-horizontal"></span></button>
+                </span>
+            </div>
+        </div>
+
+        <div class="dropdown_container">
+            <nav id="colorNav">
+                <ul>
+                    <li class="appsist_dropdown">
+                        <p>Alle Maschinen<span class="icon-dropdown icon-down"></span></p>
+                        <ul class="right">
+                            <li><a href="#">Maschine 1</a></li>
+                            <li><a href="#">Maschine 2</a></li>
+                            <li><a href="#">Maschine 3</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        -->
+
+        <div id="content_wissen" class="content">
+            <h1>Wissen</h1>
+            <p class="alert-danger">Keine Katalog-Daten empfangen</p>
+        </div>
+    </div>
+    <!-- ######################################################## Ende Katalalog Wissen ########################################################## -->
+    <!-- ######################################################## Start Lernobjekt ############################################################### -->
+    <div class="page" id="page_lernobjekt">
+        <div id="content_lernobjekt">
+            <h1>Lernobjekt</h1>
+            <p class="alert-danger">Keine Daten empfangen</p>
+        </div>
+    </div>
+    <!-- ######################################################## Ende Lernobjekt ################################################################ -->
+    <!-- ######################################################## Start Assistenz ################################################################ -->
+    <div class="page" id="page_assistenz">
+        <div id="content_assistenz">
+            <h1>Assistenz</h1>
+            <p class="alert-danger">Keine Katalog-Daten empfangen</p>
+        </div>
+    </div>
+    <!-- ######################################################## Ende Assistenz ################################################################# -->
+    <!-- ######################################################## Start Katalog Kontakt ########################################################## -->
+    <div class="page" id="page_contact">
+        <!--<div class="appsist_breadcrumb">
+            <a href="#">Alle</a>
+            <a href="#">Anlage 1</a>
+            <a href="#">Station 20</a>
+        </div>-->
+
+        <div id="content_contact" class="content">
+            <h1>Kontakte</h1>
+            <p>Anzeige in Vorbereitung</p>
+        </div>
+    </div>
+    <!-- ######################################################## Ende Katalog Kontakt ########################################################### -->
+    <!-- ######################################################## Start Katalog SiteOverview ########################################################## -->
+    <div class="page" id="page_siteOverview">
+        <div>
+            <div class="title_anlagen">
+                <h1>Anlagenübersicht</h1>
+            </div>
+
+            <!--
+                <div class="dropdown_container">
+                    <nav id="colorNav">
+                        <ul>
+                            <li class="appsist_dropdown ">
+
+                                <p>Alle Maschinen<span class="icon-dropdown icon-down"></span></p>
+                                <ul class="right">
+                                    <li><a href="#">Typ 1</a></li>
+                                    <li><a href="#">Typ 2</a></li>
+                                    <li><a href="#">Typ 3</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            -->
+            <div class="content" id="content_siteOverview">
+                <p class="alert-danger">Keine Katalog-Daten empfangen</p>
+            </div>
+        </div>
+    </div> <!-- / page-->
+    <!-- ######################################################## Ende Katalog SiteOverview ########################################################### -->
+    <!-- ######################################################## Start Katalog StationInfo ########################################################## -->
+    <div class="page" id="page_stations">
+        <div id="content_stations" class="content">
+            <div class="title_anlagen">
+                <h1>Anlagenübersicht</h1>
+                <p class="alert-danger">Keine Katalog-Daten empfangen</p>
+            </div>
+        </div>
+    </div> <!-- / page-->
+    <!-- ######################################################## Ende Katalog StationInfo ########################################################### -->
+</body>
+</html>

@@ -1,0 +1,33 @@
+﻿<h1>{{site}}</h1>
+<div id="stations_overview_cat" class="liquid" style="margin-top: 8px;">
+    <span class="previous icon icon-left"></span>
+    <div class="wrapper">
+        <ul>
+            {{#each stations}}
+            <li>
+                <div class="content_box_anlage mouse_pointer">
+                    <!--<h1 style="float:left;">Maschine20</h1><span class="icon_quad bg_grey icon-knowledge-bulb right" style="z-index:1;"></span>-->
+                    <table>
+                        <tbody>
+                            <tr class="header">
+                                <td class="stat_heading">{{getMachineID station}}</td>
+                                <td class="stat_symbol">
+                                    <div aria-hidden="true" class="icon_quad bg_grey icon-knowledge-bulb right"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {{#compare content.type "frame"}}
+                    <!--<iframe class="mid-container" id="mid-Containter-id" src="{{content.src}}"></iframe>-->
+
+                    <div style="height:100%; padding-bottom:50px;" id="div_iframe_parent">
+                        <iframe name="theIFrame" style="overflow-y:scroll;" class="mid-container" id="mid-Containter-id" src="{{content.src}}"></iframe>
+                    </div>
+                    {{/compare}}
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    <span class="next icon icon-right"></span>
+</div>

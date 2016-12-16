@@ -1,0 +1,116 @@
+<!--<div class="appsist_breadcrumb_02">
+	<a href="#">{{title}}</a>
+</div>-->
+<style>
+.my_text_field {
+  background-color: #ffffff;
+  font-family: "Fira_Regular";
+  font-size: 17px;
+  margin: -15px 3px 16px 0;
+  min-height: 100px;
+  max-height: 800px;
+  overflow-y: auto;
+  padding: 16px;
+  width: 32%;
+}
+.my_content_right{
+background-color: #999999;
+border-left: 16px solid #e5e5e5;
+bottom: 0;
+margin: 0 0 16px 16px;
+overflow: auto;
+padding: 16px;
+position: absolute;
+right: 16px;
+text-align: left;
+top: 0px;
+width: 66%;
+}
+
+.my_textcontent_right{
+background-color: #ffffff;
+border-left: 16px solid #e5e5e5;
+bottom: 0;
+margin: 0 0 16px 16px;
+overflow: auto;
+padding: 16px;
+position: absolute;
+right: 16px;
+text-align: left;
+top: 0px;
+width: 66%;
+}
+</style>
+ 
+<div id="content"> 
+	<div class="container">
+		<div class="tabs-container">
+			<div class="tab">
+			{{#each chapters}}
+				<div id="tab-{{inc @index}}" class="tab-content">
+                    {{#if content.main}}
+            		        
+
+                    {{#compare content.mimeType "includes" "image"}}
+                    <div class="my_text_field">
+                    {{{content.info}}}
+                    </div>
+                    <div class="my_content_right">
+                    <img src="{{content.main}}" />
+                    </div>
+                    {{/compare}}
+
+                    {{#compare content.mimeType "includes" "video"}}
+                    <video controls>
+                        <source src="{{content.main}}" type="{{content.mimeType}}">
+                        Your browser does not support HTML5 video.
+                    </video>
+                    {{/compare}}
+
+                    {{#compare content.mimeType "text/html"}}
+                    <div style="position: absolute; top: 0px; bottom: 0px; left:0px; right: 0px;">
+                        <iframe class="embed_content" src="{{content.main}}"></iframe>
+                    </div>
+                    {{/compare}}
+
+                    {{#compare content.mimeType "text/html+snippet"}}
+                    {{{getVideoHTML content.main}}}
+                    {{/compare}}
+                    <!-- end of true case -->
+                    {{else}}
+                    	{{#if content.info}}
+						Info
+						{{#compare content.mimeType "text/html"}}
+	                    <div class="my_textcontent_right">
+	                    {{{content.info}}}
+	                    </div>
+                    	{{/compare}}
+						
+						{{/if}}
+			
+                    {{/if}}
+
+                    {{#compare content.type "html"}}
+                    {{{content.body}}}
+                    {{/compare}}
+
+                    {{#compare content.type "frame"}}
+                    <div style="position: absolute; top: 0px; bottom: 0px; left:0px; right: 0px;">
+                    {{/compare}}				
+                        <iframe style="display: block; width:100%; height:100%; border:none;" src="{{content.src}}"></iframe>
+                    </div>
+				</div>
+				<div style="padding-left:12px;"><button id="assi_close" class="btn btn-appsist_quad" type="submit" onclick="IID.selectPage('page_wissen');"><span class="icon icon-abort"></span></button></div>
+			{{/each}}
+			</div>
+			<ul class="tabs-menu">
+				{{#each chapters}}
+				<li {{#compare @index 0}} class="current" {{/compare}} style="width:{{math 100 "/" ../chapters.length}}%;text-align:center;color:#ffffff;">
+					{{caption}}
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+	</div>
+</div> 
+

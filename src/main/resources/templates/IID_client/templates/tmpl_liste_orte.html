@@ -1,0 +1,9 @@
+﻿{{#each locations}}
+<li class="info" id="{{id}}" onclick="IID.selectLocation('{{id}}')">
+    <span class="icon icon-marker" aria-hidden="true"></span>
+    <div>
+        <p class="size_50">{{building}}</p>
+        <p class="size_100_m">{{displayName}}</p>
+    </div>
+</li>
+{{/each}}
